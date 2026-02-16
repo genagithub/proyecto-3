@@ -66,6 +66,7 @@ df_employees.sort_values(by="employee_revenue", ascending=False, inplace=True)
 best_employee = df_employees.iloc[0,:] 
 
 app = dash.Dash(__name__)
+server = app.server
 
 app.layout = html.Div(id="body",children=[
     html.Div(id="dropdown_div",className="e3_dropdown_div",children=[

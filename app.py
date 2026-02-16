@@ -5,63 +5,58 @@ import dash
 from dash import html, dcc
 from dash.dependencies import Input, Output
 
-conn = sqlite3.connect("data/northwind.db")
+with sqlite3.connect("northwind.db") as conn:
 
-first_queries = conn.cursor()
+    first_queries = conn.cursor()
 
-first_queries.execute('''create view order_details_cash as
+    first_queries.execute('''create view order_details_cash as
                          select OrderID, od.ProductID, Quantity, Price * Quantity as product_cash from OrderDetails od
                          join Products p on od.ProductID = p.ProductID;''')
 
-first_queries.execute('''create view products_revenue as
+    first_queries.execute('''create view products_revenue as
                          select p.ProductID, ProductName, sum(product_cash) as product_revenue, sum(Quantity) from order_details_cash odc
                          join Products p on p.ProductID = odc.ProductID
                          group by p.ProductID;''')
 
-first_queries.execute('''select * from products_revenue where product_revenue > (select avg(product_revenue) from products_revenue)
+    first_queries.execute('''select * from products_revenue where product_revenue > (select avg(product_revenue) from products_revenue)
                          order by product_revenue desc''')
 
-df_products = pd.DataFrame(first_queries.fetchall())
-df_products.columns = ["product_id","product","product_revenue","total_quantity"]
+    df_products = pd.DataFrame(first_queries.fetchall())
 
-mean_products = df_products["product_revenue"].mean()
+    second_queries = conn.cursor()
 
-second_queries = conn.cursor()
-
-second_queries.execute('''create view orders_revenue as
+    second_queries.execute('''create view orders_revenue as
                           select o.OrderID, sum(product_cash) as order_revenue, sum(Quantity) as total_quantity, EmployeeID from order_details_cash odc
                           join Orders o on o.OrderID = odc.OrderID
                           group by o.OrderID
                           order by order_revenue desc;''')
 
-second_queries.execute('select * from orders_revenue where order_revenue > (select avg(order_revenue) from orders_revenue)')
+    second_queries.execute('select * from orders_revenue where order_revenue > (select avg(order_revenue) from orders_revenue)')
 
-df_orders = pd.DataFrame(second_queries.fetchall())
-df_orders.drop(3,axis=1,inplace=True)
-df_orders.columns = ["order_id","order_revenue","total_quantity"]
+    df_orders = pd.DataFrame(second_queries.fetchall())
 
-df_orders["order_id"] = df_orders["order_id"].astype(str)
+    third_queries = conn.cursor()
 
-mean_orders = df_orders["order_revenue"].mean()
-
-third_queries = conn.cursor()
-
-third_queries.execute('''select e.EmployeeID, FirstName || " " || LastName, sum(order_revenue) as employee_revenue, sum(total_quantity) from Employees e
+    third_queries.execute('''select e.EmployeeID, FirstName || " " || LastName, sum(order_revenue) as employee_revenue, sum(total_quantity) from Employees e
                          join orders_revenue o on o.EmployeeID = e.EmployeeID 
                          group by e.EmployeeID
                          order by employee_revenue''')
 
-conn.close()
 
-df_employees = pd.DataFrame(third_queries.fetchall())
+    df_employees = pd.DataFrame(third_queries.fetchall())
+
+df_products.columns = ["product_id","product","product_revenue","total_quantity"]
+df_orders.columns = ["order_id","order_revenue","total_quantity"]
+df_orders.drop(3,axis=1,inplace=True)
+df_orders["order_id"] = df_orders["order_id"].astype(str)
 df_employees.columns = ["employee_id","name","employee_revenue","total_quantity"]
 
+mean_products = df_products["product_revenue"].mean()
+mean_orders = df_orders["order_revenue"].mean()
 mean_employees = df_employees["employee_revenue"].mean()
 
 best_product = df_products.iloc[0,:] 
-
 best_order = df_orders.iloc[0,:] 
-
 df_employees.sort_values(by="employee_revenue", ascending=False, inplace=True)
 best_employee = df_employees.iloc[0,:] 
 
@@ -155,18 +150,16 @@ def update_graph(slct_data, slct_employee, slct_product, slct_order):
         
         employees_style["zIndex"] = 5
         
-        conn = sqlite3.connect("data/northwind.db")
-        get_employee = conn.cursor()
-        
-        employee = df_employees.loc[df_employees["name"] == slct_employee, "employee_id"].values[0]
-
-        get_employee.execute(f'''select ProductName, sum(product_cash) from order_details_cash odc
+        with sqlite3.connect("northwind.db") as conn:
+            get_employee = conn.cursor()
+            get_employee.execute(f'''select ProductName, sum(product_cash) from order_details_cash odc
                                  join Products p on p.ProductID = odc.ProductID
                                  join Orders o on o.OrderID = odc.OrderID join Employees e on o.EmployeeID = e.EmployeeID
                                  where e.EmployeeID = {employee}
                                  group by p.ProductID''')
-        
-        employee_products = pd.DataFrame(get_employee.fetchall())
+            employee_products = pd.DataFrame(get_employee.fetchall())
+
+        employee = df_employees.loc[df_employees["name"] == slct_employee, "employee_id"].values[0]
         employee_products.columns = ["product","revenue"]
 
         graph_2 = px.treemap(employee_products, path=["product"], values="revenue", color="revenue", color_continuous_scale="Viridis")
@@ -179,16 +172,14 @@ def update_graph(slct_data, slct_employee, slct_product, slct_order):
         
         products_style["zIndex"] = 5
         
-        conn = sqlite3.connect("data/northwind.db")
-        get_product = conn.cursor()
-        
-        product = df_products.loc[df_products["product"] == slct_product, "product_id"].values[0]
-        
-        get_product.execute(f'''select OrderID,  sum(Quantity), sum(product_cash) from order_details_cash
+        with sqlite3.connect("northwind.db") as conn:        
+            get_product = conn.cursor()
+            get_product.execute(f'''select OrderID,  sum(Quantity), sum(product_cash) from order_details_cash
                                 where ProductID = {product}
                                 group by OrderID''')
+            product_orders = pd.DataFrame(get_product.fetchall())
 
-        product_orders = pd.DataFrame(get_product.fetchall())
+        product = df_products.loc[df_products["product"] == slct_product, "product_id"].values[0]
         product_orders.columns = ["order_id","quantity","revenue"]
 
         graph_2 = px.treemap(product_orders, path=["order_id"], values="quantity", color="revenue", color_continuous_scale="Viridis")
@@ -201,17 +192,15 @@ def update_graph(slct_data, slct_employee, slct_product, slct_order):
         
         orders_style["zIndex"] = 5
         
-        conn = sqlite3.connect("data/northwind.db")
-        get_order = conn.cursor()
-        
-        order = df_orders.loc[df_orders["order_id"] == slct_order, "order_id"].values[0]
-
-        get_order.execute(f'''select ProductName, sum(product_cash) from order_details_cash odc
+        with sqlite3.connect("northwind.db") as conn:        
+            get_order = conn.cursor()
+            get_order.execute(f'''select ProductName, sum(product_cash) from order_details_cash odc
                               join Products p on p.ProductID = odc.ProductID
                               where odc.OrderID = {order}
                               group by p.ProductID''')
+            order_products = pd.DataFrame(get_order.fetchall())
 
-        order_products = pd.DataFrame(get_order.fetchall())
+        order = df_orders.loc[df_orders["order_id"] == slct_order, "order_id"].values[0]
         order_products.columns = ["product","revenue"]
 
         graph_2 = px.treemap(order_products, path=["product"], values="revenue", color="revenue", color_continuous_scale="Viridis")

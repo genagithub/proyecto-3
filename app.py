@@ -5,7 +5,7 @@ import dash
 from dash import html, dcc
 from dash.dependencies import Input, Output
 
-with sqlite3.connect("northwind.db") as conn:
+with sqlite3.connect("data/northwind.db") as conn:
 
     first_queries = conn.cursor()
 
@@ -150,7 +150,7 @@ def update_graph(slct_data, slct_employee, slct_product, slct_order):
         
         employees_style["zIndex"] = 5
         
-        with sqlite3.connect("northwind.db") as conn:
+        with sqlite3.connect("data/orthwind.db") as conn:
             get_employee = conn.cursor()
             get_employee.execute(f'''select ProductName, sum(product_cash) from order_details_cash odc
                                  join Products p on p.ProductID = odc.ProductID
@@ -172,7 +172,7 @@ def update_graph(slct_data, slct_employee, slct_product, slct_order):
         
         products_style["zIndex"] = 5
         
-        with sqlite3.connect("northwind.db") as conn:        
+        with sqlite3.connect("data/northwind.db") as conn:        
             get_product = conn.cursor()
             get_product.execute(f'''select OrderID,  sum(Quantity), sum(product_cash) from order_details_cash
                                 where ProductID = {product}
@@ -192,7 +192,7 @@ def update_graph(slct_data, slct_employee, slct_product, slct_order):
         
         orders_style["zIndex"] = 5
         
-        with sqlite3.connect("northwind.db") as conn:        
+        with sqlite3.connect("data/northwind.db") as conn:        
             get_order = conn.cursor()
             get_order.execute(f'''select ProductName, sum(product_cash) from order_details_cash odc
                               join Products p on p.ProductID = odc.ProductID

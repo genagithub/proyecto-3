@@ -152,7 +152,7 @@ def update_graph(slct_data, slct_employee, slct_product, slct_order):
 
         employee = df_employees.loc[df_employees["name"] == slct_employee, "employee_id"].values[0]
 
-        with sqlite3.connect("data/orthwind.db") as conn:
+        with sqlite3.connect("data/northwind.db") as conn:
             get_employee = conn.cursor()
             get_employee.execute(f'''select ProductName, sum(product_cash) from order_details_cash odc
                                  join Products p on p.ProductID = odc.ProductID

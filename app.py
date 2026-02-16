@@ -2,8 +2,7 @@ import sqlite3
 import pandas as pd
 import plotly.express as px
 import dash
-import dash_core_components as dcc
-import dash_html_components as html
+from dash import html, dcc
 from dash.dependencies import Input, Output
 
 conn = sqlite3.connect("data/northwind.db")

@@ -46,8 +46,8 @@ with sqlite3.connect("data/northwind.db") as conn:
     df_employees = pd.DataFrame(third_queries.fetchall())
 
 df_products.columns = ["product_id","product","product_revenue","total_quantity"]
-df_orders.columns = ["order_id","order_revenue","total_quantity"]
 df_orders.drop(3,axis=1,inplace=True)
+df_orders.columns = ["order_id","order_revenue","total_quantity"]
 df_orders["order_id"] = df_orders["order_id"].astype(str)
 df_employees.columns = ["employee_id","name","employee_revenue","total_quantity"]
 

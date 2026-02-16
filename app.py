@@ -149,7 +149,9 @@ def update_graph(slct_data, slct_employee, slct_product, slct_order):
         graph_1 = px.bar(df_employees, x=slct_data, y="employee_revenue", color_discrete_sequence=["red"], text_auto=".2s", title="Ingresos de empleados", labels=dict(name="Empleados", employee_revenue="Ingresos"))
         
         employees_style["zIndex"] = 5
-        
+
+        employee = df_employees.loc[df_employees["name"] == slct_employee, "employee_id"].values[0]
+
         with sqlite3.connect("data/orthwind.db") as conn:
             get_employee = conn.cursor()
             get_employee.execute(f'''select ProductName, sum(product_cash) from order_details_cash odc
@@ -159,7 +161,6 @@ def update_graph(slct_data, slct_employee, slct_product, slct_order):
                                  group by p.ProductID''')
             employee_products = pd.DataFrame(get_employee.fetchall())
 
-        employee = df_employees.loc[df_employees["name"] == slct_employee, "employee_id"].values[0]
         employee_products.columns = ["product","revenue"]
 
         graph_2 = px.treemap(employee_products, path=["product"], values="revenue", color="revenue", color_continuous_scale="Viridis")
@@ -171,7 +172,9 @@ def update_graph(slct_data, slct_employee, slct_product, slct_order):
         graph_1.update_xaxes(tickangle=35, tickfont_size=8)
         
         products_style["zIndex"] = 5
-        
+                
+        product = df_products.loc[df_products["product"] == slct_product, "product_id"].values[0]
+
         with sqlite3.connect("data/northwind.db") as conn:        
             get_product = conn.cursor()
             get_product.execute(f'''select OrderID,  sum(Quantity), sum(product_cash) from order_details_cash
@@ -179,7 +182,6 @@ def update_graph(slct_data, slct_employee, slct_product, slct_order):
                                 group by OrderID''')
             product_orders = pd.DataFrame(get_product.fetchall())
 
-        product = df_products.loc[df_products["product"] == slct_product, "product_id"].values[0]
         product_orders.columns = ["order_id","quantity","revenue"]
 
         graph_2 = px.treemap(product_orders, path=["order_id"], values="quantity", color="revenue", color_continuous_scale="Viridis")
@@ -191,7 +193,9 @@ def update_graph(slct_data, slct_employee, slct_product, slct_order):
         graph_1.update_xaxes(tickfont_size=9)
         
         orders_style["zIndex"] = 5
-        
+
+        order = df_orders.loc[df_orders["order_id"] == slct_order, "order_id"].values[0]
+
         with sqlite3.connect("data/northwind.db") as conn:        
             get_order = conn.cursor()
             get_order.execute(f'''select ProductName, sum(product_cash) from order_details_cash odc
@@ -200,7 +204,6 @@ def update_graph(slct_data, slct_employee, slct_product, slct_order):
                               group by p.ProductID''')
             order_products = pd.DataFrame(get_order.fetchall())
 
-        order = df_orders.loc[df_orders["order_id"] == slct_order, "order_id"].values[0]
         order_products.columns = ["product","revenue"]
 
         graph_2 = px.treemap(order_products, path=["product"], values="revenue", color="revenue", color_continuous_scale="Viridis")

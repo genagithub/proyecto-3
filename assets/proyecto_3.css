@@ -8,6 +8,9 @@
     margin-top: 20px;
     margin-bottom: 15px;
 }
+.e3_title:hover{
+    cursor:pointer;
+}
 .e3_dropdown{
     margin: 20px 7px;
     width: 153px;

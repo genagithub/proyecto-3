@@ -64,7 +64,7 @@ app = dash.Dash(__name__)
 server = app.server
 
 app.layout = html.Div(id="body",children=[
-    html.H1("Inteligencia de negocios aplicada en ventas",className="e3_title",href="https://github.com/genagithub/proyecto-3/blob/main/inteligencia_de_negocios_aplicada_en_ventas.ipynb",target="blank"),
+    html.A(href="https://github.com/genagithub/proyecto-3/blob/main/inteligencia_de_negocios_aplicada_en_ventas.ipynb",target="blank",children=[html.H1("Inteligencia de negocios aplicada en ventas",id="title",className="e3_title")]),
     html.Div(id="dropdown_div",className="e3_dropdown_div",children=[
             dcc.Dropdown(id="dropdown",className="e3_dropdown",
                         options = [

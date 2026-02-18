@@ -64,6 +64,7 @@ app = dash.Dash(__name__)
 server = app.server
 
 app.layout = html.Div(id="body",children=[
+    html.H1("Inteligencia de negocios aplicada en ventas",className="e3_title"),
     html.Div(id="dropdown_div",className="e3_dropdown_div",children=[
             dcc.Dropdown(id="dropdown",className="e3_dropdown",
                         options = [
@@ -76,7 +77,7 @@ app.layout = html.Div(id="body",children=[
                         clearable=False)
     ]),
     dcc.Graph(id="graph-1",figure={}),
-    html.H1("Mayores ingresos",className="e3_title"),
+    html.H2("Entidades con mayor rentabilidad",className="e3_title"),
     html.Div(className="e3_container",children=[
         html.Div(id="data_1",className="e3_children",style={"color":"blue"},children=[   
             html.H2("Productos",style={"font-size":"1.15em","color":"blue","font-family":"sans-serif"}),

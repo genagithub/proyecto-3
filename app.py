@@ -77,7 +77,7 @@ app.layout = html.Div(id="body",children=[
                         clearable=False)
     ]),
     dcc.Graph(id="graph-1",figure={}),
-    html.H2("Entidades con mayor rentabilidad",className="e3_title"),
+    html.H2("Palancas de negocio",className="e3_title"),
     html.Div(className="e3_container",children=[
         html.Div(id="data_1",className="e3_children",style={"color":"blue"},children=[   
             html.H2("Productos",style={"font-size":"1.15em","color":"blue","font-family":"sans-serif"}),
@@ -93,7 +93,7 @@ app.layout = html.Div(id="body",children=[
             html.P(f"Promedio: {round(mean_employees,1)}$",className="e3_mean",style={"color":"red"}),
             html.Ul(className="e3_ul",style={"color":"red"},children=[
                 html.Li(f"Nombre: {best_employee["name"]}",className="e3_list"),
-                html.Li(f"Unidades vendidas totales: {best_employee["total_quantity"]}",className="e3_list"),
+                html.Li(f"Cantidad total: {best_employee["total_quantity"]} uds.",className="e3_list"),
                 html.Li(f"Ingreso total: {best_employee["employee_revenue"]}$",className="e3_list")
             ])
         ]),
@@ -102,7 +102,7 @@ app.layout = html.Div(id="body",children=[
             html.P(f"Promedio: {round(mean_orders,1)}$",className="e3_mean",style={"color":"green"}),
             html.Ul(className="e3_ul",style={"color":"green"},children=[
                 html.Li(f"ID de órden: {best_order["order_id"]}",className="e3_list"),
-                html.Li(f"Unidades vendidas totales: {best_order["total_quantity"]}",className="e3_list"),
+                html.Li(f"Cantidad total: {best_order["total_quantity"]} uds.",className="e3_list"),
                 html.Li(f"Ingreso total: {best_order["order_revenue"]}$",className="e3_list")
             ])
         ]) 

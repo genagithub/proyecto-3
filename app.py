@@ -64,7 +64,7 @@ app = dash.Dash(__name__)
 server = app.server
 
 app.layout = html.Div(id="body",children=[
-    html.A(href="https://github.com/genagithub/proyecto-3/blob/main/inteligencia_de_negocios_aplicada_en_ventas.ipynb",children=[html.H1("Análisis operacional y desempeño comercial",id="title",className="e3_title")]),
+    html.A(href="https://github.com/genagithub/proyecto-3/blob/main/inteligencia_de_negocio_aplicada_en_operaciones.ipynb",children=[html.H1("Análisis operacional y desempeño comercial",id="title",className="e3_title")]),
     html.Div(id="dropdown_div",className="e3_dropdown_div",children=[
             dcc.Dropdown(id="dropdown",className="e3_dropdown",
                         options = [
@@ -165,7 +165,7 @@ def update_graph(slct_data, slct_employee, slct_product, slct_order):
         employee_products.columns = ["product","revenue"]
 
         graph_2 = px.treemap(employee_products, path=["product"], values="revenue", color="revenue", color_continuous_scale="Viridis")
-        graph_2.update_layout(title_text="Concentración de Ventas por Productos", coloraxis_colorbar_title_text="Ingresos")
+        graph_2.update_layout(title_text="Distribución de productos vendidos del empleado {slct_employee}", coloraxis_colorbar_title_text="Ingresos")
                 
     elif slct_data == "product":
         
@@ -178,15 +178,18 @@ def update_graph(slct_data, slct_employee, slct_product, slct_order):
 
         with sqlite3.connect("data/northwind.db") as conn:        
             get_product = conn.cursor()
-            get_product.execute(f'''select OrderID,  sum(Quantity), sum(product_cash) from order_details_cash
-                                where ProductID = {product}
+            get_product.execute(f'''select OrderID,  sum(Quantity), sum(product_cash), c.CategoryName from order_details_cash odc
+                                join Products p on odc.ProductID = p.ProductID
+                                join Categories c on p.CategoryID = c.CategoryID
+                                where odc.ProductID = {product}
                                 group by OrderID''')
             product_orders = pd.DataFrame(get_product.fetchall())
 
-        product_orders.columns = ["order_id","quantity","revenue"]
+        product_orders.columns = ["order_id","quantity","revenue","category"]
+        cat_name = product_orders["category"].iloc[0]
 
         graph_2 = px.treemap(product_orders, path=["order_id"], values="quantity", color="revenue", color_continuous_scale="Viridis")
-        graph_2.update_layout(title_text="Distribución de Cantidad y Ingresos por Orden", coloraxis_colorbar_title_text="Ingresos")
+        graph_2.update_layout(title_text=f"Distribución en {slct_product} (categoría: {cat_name}) por cantidad e ingresos", coloraxis_colorbar_title_text="Ingresos")
         
     elif slct_data == "order_id":
         
@@ -199,16 +202,19 @@ def update_graph(slct_data, slct_employee, slct_product, slct_order):
 
         with sqlite3.connect("data/northwind.db") as conn:        
             get_order = conn.cursor()
-            get_order.execute(f'''select ProductName, sum(product_cash) from order_details_cash odc
-                              join Products p on p.ProductID = odc.ProductID
-                              where odc.OrderID = {order}
-                              group by p.ProductID''')
+            get_order.execute(f'''select p.ProductName, sum(odc.product_cash), c.CompanyName from order_details_cash odc
+                             join Products p on p.ProductID = odc.ProductID
+                             join Orders o on o.OrderID = odc.OrderID
+                             join Customers c on o.CustomerID = c.CustomerID
+                             where odc.OrderID = {order}
+                             group by p.ProductID''')
             order_products = pd.DataFrame(get_order.fetchall())
 
-        order_products.columns = ["product","revenue"]
+        order_products.columns = ["product","revenue","customer"]
+        customer_name = order_products["customer"].iloc[0]
 
         graph_2 = px.treemap(order_products, path=["product"], values="revenue", color="revenue", color_continuous_scale="Viridis")
-        graph_2.update_layout(title_text="Concentración de Ventas por Productos", coloraxis_colorbar_title_text="Ingresos")
+        graph_2.update_layout(title_text=f"Concentración de productos en la órden {slct_order} (Cliente: {customer_name})", coloraxis_colorbar_title_text="Ingresos")
             
     return graph_1, employees_style, products_style, orders_style, graph_2    
     

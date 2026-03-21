@@ -165,7 +165,7 @@ def update_graph(slct_data, slct_employee, slct_product, slct_order):
         employee_products.columns = ["product","revenue"]
 
         graph_2 = px.treemap(employee_products, path=["product"], values="revenue", color="revenue", color_continuous_scale="Viridis")
-        graph_2.update_layout(title_text=f"Distribución de productos vendidos del empleado {employee}", coloraxis_colorbar_title_text="Ingresos")
+        graph_2.update_layout(title_text=f"Distribución de productos vendidos del empleado {slct_employee}", coloraxis_colorbar_title_text="Ingresos")
                 
     elif slct_data == "product":
         
@@ -189,7 +189,7 @@ def update_graph(slct_data, slct_employee, slct_product, slct_order):
         cat_name = product_orders["category"].iloc[0]
 
         graph_2 = px.treemap(product_orders, path=["order_id"], values="quantity", color="revenue", color_continuous_scale="Viridis")
-        graph_2.update_layout(title_text=f"Distribución en {product} (categoría: {cat_name}) por cantidad e ingresos", coloraxis_colorbar_title_text="Ingresos")
+        graph_2.update_layout(title_text=f"Distribución en {slct_product} (categoría: {cat_name}) por cantidad e ingresos", coloraxis_colorbar_title_text="Ingresos")
         
     elif slct_data == "order_id":
         

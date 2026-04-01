@@ -178,7 +178,7 @@ def update_graph(slct_data, slct_employee, slct_product, slct_order):
 
         with sqlite3.connect("data/northwind.db") as conn:        
             get_product = conn.cursor()
-            get_product.execute(f'''select OrderID,  sum(Quantity), sum(product_cash), c.CategoryName from order_details_cash odc
+            get_product.execute(f'''select OrderID,  sum(Quantity), sum(product_cash), c.CustomerName from order_details_cash odc
                                 join Products p on odc.ProductID = p.ProductID
                                 join Categories c on p.CategoryID = c.CategoryID
                                 where odc.ProductID = {product}

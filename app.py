@@ -64,7 +64,7 @@ app = dash.Dash(__name__)
 server = app.server
 
 app.layout = html.Div(id="body",children=[
-    html.A(href="https://github.com/genagithub/proyecto-3/blob/main/inteligencia_de_negocio_aplicada_en_operaciones.ipynb",children=[html.H1("Análisis operacional y desempeño comercial",id="title",className="e3_title")]),
+    html.A(href="https://github.com/genagithub/proyecto-3/blob/main/analítica_de_negocio_aplicada_en_operaciones.ipynb",children=[html.H1("Análisis operacional y desempeño comercial",id="title",className="e3_title")]),
     html.Div(id="dropdown_div",className="e3_dropdown_div",children=[
             dcc.Dropdown(id="dropdown",className="e3_dropdown",
                         options = [

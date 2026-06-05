@@ -5,7 +5,7 @@ import dash
 from dash import html, dcc
 from dash.dependencies import Input, Output
 
-with sqlite3.connect("data/northwind.db") as conn:
+with sqlite3.connect("data/sales_orders.db") as conn:
 
     first_queries = conn.cursor()
 
@@ -153,7 +153,7 @@ def update_graph(slct_data, slct_employee, slct_product, slct_order):
 
         employee = df_employees.loc[df_employees["name"] == slct_employee, "employee_id"].values[0]
 
-        with sqlite3.connect("data/northwind.db") as conn:
+        with sqlite3.connect("data/sales_orders.db") as conn:
             get_employee = conn.cursor()
             get_employee.execute(f'''select ProductName, sum(product_cash) from order_details_cash odc
                                  join Products p on p.ProductID = odc.ProductID
@@ -176,7 +176,7 @@ def update_graph(slct_data, slct_employee, slct_product, slct_order):
                 
         product = df_products.loc[df_products["product"] == slct_product, "product_id"].values[0]
 
-        with sqlite3.connect("data/northwind.db") as conn:        
+        with sqlite3.connect("data/sales_orders.db") as conn:        
             get_product = conn.cursor()
             get_product.execute(f'''select OrderID,  sum(Quantity), sum(product_cash), c.CustomerName from order_details_cash odc
                                 join Products p on odc.ProductID = p.ProductID
@@ -200,7 +200,7 @@ def update_graph(slct_data, slct_employee, slct_product, slct_order):
 
         order = df_orders.loc[df_orders["order_id"] == slct_order, "order_id"].values[0]
 
-        with sqlite3.connect("data/northwind.db") as conn:        
+        with sqlite3.connect("data/sales_orders.db") as conn:        
             get_order = conn.cursor()
             get_order.execute(f'''select p.ProductName, sum(odc.product_cash), c.CustomerName from order_details_cash odc
                              join Products p on p.ProductID = odc.ProductID

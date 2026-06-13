@@ -8,10 +8,10 @@ El equipo de ventas y operaciones sufría de silos de información: los datos de
 #### 🛠️ La Solución Técnica: Arquitectura e Integración
 Para solucionar la falta de visibilidad, el proyecto se centró en la creación de una infraestructura analítica centralizada mediante los siguientes pasos:
 - **Extracción y Transformación (ETL):** Conexión, limpieza y procesamiento avanzado de datos críticos alojados en bases de datos relacionales.
-- **Modelo de Datos Unificado:** Se erradicaron los silos al consolidar en un solo almacén de datos (Data Warehouse) tres pilares operativos:
-  1. Métricas detalladas de productos vendidos.
-  2. Palancas de negocio mencionadas para cada entidad.
-  3. Indicadores clave de rendimiento (KPIs) de la fuerza de ventas.
+- **Modelo de Datos Unificado:** Se erradicaron los silos al consolidar en un solo almacén de datos (Data Warehouse) los tres pilares operativos:
+  1. Métricas de volumen de venta y rentabilidad de los artículos comercializados.
+  2. Indicadores clave de rendimiento (KPIs) y desempeño de la fuerza de ventas.
+  3. Seguimiento integral de la composición comercial de los pedidos.
 - **Diagnóstico Matemático:** Estructuración de consultas optimizadas para analizar el rendimiento comercial histórico sin sobrecargar los sistemas de producción.
 
 ---

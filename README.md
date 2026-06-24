@@ -17,7 +17,7 @@ Para solucionar la falta de visibilidad, el proyecto se enfocó en la creación 
 ---
 
 #### 🚀 El Data Product: Panel de Control por Entidades de Ejecución
-Ecosistema analítico de diagnóstico financiero y comercial para los líderes. El tablero permite hacer "doble clic" en las variables para explorar su composición de éxito:
+El resultado final es una plataforma de diagnóstico financiero y comercial para los líderes. El tablero permite hacer "doble clic" en las variables para explorar su composición de éxito:
 - **Módulo de Éxito Comercial:** Identifica instantáneamente qué variables y qué combinaciones operativas generan los mayores ingresos.
 - **Monitoreo de Desviaciones:** Permite a los gerentes detectar alertas rojas y retrasos en el ciclo de vida de las órdenes en tiempo real.
 

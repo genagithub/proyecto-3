@@ -17,9 +17,9 @@ Para solucionar la falta de visibilidad, el proyecto se enfocó en la creación 
 ---
 
 #### 🚀 El Data Product: Panel de Control por Entidades de Ejecución
-El resultado final es una plataforma de diagnóstico financiero y comercial para los líderes. El tablero permite hacer "doble clic" en las variables para explorar su composición de éxito:
-- **Módulo de Éxito Comercial:** Identifica instantáneamente qué variables y qué combinaciones operativas generan los mayores ingresos.
-- **Monitoreo de Desviaciones:** Permite a los gerentes detectar alertas rojas y retrasos en el ciclo de vida de las órdenes en tiempo real.
+El resultado final es una plataforma de diagnóstico financiero y comercial para los líderes que se basa en un ecosistema de datos de dos módulos, permitiendo explorar cada una de las entidades clave involucradas:
+- **Monitoreo de Éxito Comercial:** Registra a los mejores en rendimiento de cada producto, empleado y órden de pedido a través de los ingresos que generaron.
+- **Análisis de Entidades:** El tablero permite hacer un segundo click que selecciona una de las palancas de negocio para explorar su composición de éxito y relación con otras.
 
 ---
 

@@ -20,5 +20,5 @@ El resultado final es una plataforma de diagnóstico financiero y comercial para
 ---
 
 #### 📌 Propósito de este Proyecto: Impacto Operativo
-Al ser una herramienta de autoservicio estratégico, este entregable no busca dar una única recomendación estática, sino satisfacer de forma continua las necesidades analíticas de múltiples áreas de ejecución, permitiendo que cada stakeholder extraiga sus propias conclusiones de negocio de manera autónoma.
+
 - **Optimización de Recursos:** Funciona como una brújula operativa para que el equipo comercial asigne presupuestos y metas basados en datos reales de rendimiento, maximizando la rentabilidad neta de la empresa.

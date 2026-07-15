@@ -21,4 +21,4 @@ El resultado final es una plataforma de diagnóstico financiero y comercial para
 
 #### 📌 Propósito de este Proyecto: Impacto Operativo
 
-- **Optimización de Recursos:** Funciona como una brújula operativa para que el equipo comercial asigne presupuestos y metas basados en datos reales de rendimiento, maximizando la rentabilidad neta de la empresa.
+**Optimización de Recursos:** Funciona como una brújula operativa para que el equipo comercial asigne presupuestos y metas basados en datos reales de rendimiento, maximizando la rentabilidad neta de la empresa.

@@ -12,13 +12,13 @@ Para solucionar la falta de visibilidad, el proyecto se enfocó en la creación 
      
 ---
 
-#### 🚀 El Data Product: Panel de Control por Entidades de Ejecución
+#### 🚀 Solución Analítica: Panel de Control por Entidades de Ejecución
 El resultado final es una plataforma de diagnóstico financiero y comercial para los líderes que se basa en un ecosistema de datos de dos módulos, permitiendo explorar cada una de las entidades clave involucradas:
 - **Monitoreo de Éxito Comercial:** Registra a los mejores en rendimiento de cada producto, empleado y órden de pedido a través de los ingresos que generaron.
 - **Análisis de Entidades:** El tablero permite hacer un segundo click que selecciona una de las palancas de negocio para explorar su composición de éxito y relación con otras.
 
 ---
 
-#### 📌 Propósito de este Proyecto
-Al ser una herramienta de autoservicio estratégico, este Data Product no busca dar una única recomendación estática, sino satisfacer de forma continua las necesidades analíticas de múltiples áreas de ejecución, permitiendo que cada stakeholder extraiga sus propias conclusiones de negocio de manera autónoma.
+#### 📌 Propósito de este Proyecto: Impacto Operativo
+Al ser una herramienta de autoservicio estratégico, este entregable no busca dar una única recomendación estática, sino satisfacer de forma continua las necesidades analíticas de múltiples áreas de ejecución, permitiendo que cada stakeholder extraiga sus propias conclusiones de negocio de manera autónoma.
 - **Optimización de Recursos:** Funciona como una brújula operativa para que el equipo comercial asigne presupuestos y metas basados en datos reales de rendimiento, maximizando la rentabilidad neta de la empresa.

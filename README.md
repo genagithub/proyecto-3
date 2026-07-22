@@ -1,6 +1,6 @@
 ### 💼 Almacén de Datos y Tablero de Control Operacional de Ventas
 
-#### 🎯 El Problema de Negocio
+#### 🎯 El Contexto del Problema 
 El equipo de ventas y operaciones sufría de silos de información: los datos de productos vendidos, el ciclo de vida de los pedidos y el rendimiento de los vendedores vivían en bases de datos separadas. Esta desconexión impedía que los directores identificaran rápidamente cuáles eran los verdaderos factores de éxito comercial o dónde ocurrían las fallas operativas, retrasando la toma de decisiones estratégicas.
 
 ---

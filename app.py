@@ -1,6 +1,7 @@
 import sqlite3
 import pandas as pd
 import plotly.express as px
+import plotly.graph_objects as go
 import dash
 from dash import html, dcc
 from dash.dependencies import Input, Output
@@ -96,10 +97,10 @@ total_company_orders = df_sales_channel["TotalOrders"].sum()
 total_company_costs = df_sales_channel["MonthlyCosts"].sum()
 company_cost_per_order_baseline = total_company_costs / total_company_orders
 
-top_regional_volume = df_sales_channel.sort_values(by="TotalOrders", ascending=False).iloc
-top_regional_profit = df_sales_channel.sort_values(by="NetProfit", ascending=False)
+top_regional_volume = df_sales_channel.sort_values(by="TotalOrders", ascending=False).iloc[0]
+top_regional_profit = df_sales_channel.sort_values(by="NetProfit", ascending=False).iloc[0]
 df_sales_channel["CostPerOrder"] = df_sales_channel["MonthlyCosts"] / df_sales_channel["TotalOrders"]
-top_cost_efficiency = df_sales_channel.sort_values(by="CostPerOrder", ascending=True).iloc
+top_cost_efficiency = df_sales_channel.sort_values(by="CostPerOrder", ascending=True).iloc[0]
 
 total_spend_global = df_customers["TotalSpend"].sum()
 total_orders_global = df_customers["TotalOrders"].sum()
@@ -131,7 +132,7 @@ app.layout = html.Div(id="body",children=[
             html.H2("Categorías", style={"font-size":"1.15em","font-family":"sans-serif"}),
             html.P(f"Promedio (Margen Neto): {company_wide_net_margin_baseline}%", className="e3_mean"),
             html.Ul(className="e3_ul", children=[
-                html.Li(f"Volumen de ventas ({top_volume_row["Category"]}): {top_volume_market_share["TotalQuantity"]}", className="e3_list"),
+                html.Li(f"Volumen de ventas ({top_volume_row["Category"]}): {top_volume_market_share}", className="e3_list"),
                 html.Li(f"Ingresos Brutos ({top_revenue_row["Category"]}): ${top_revenue_row["TotalGrossIncome"]}", className="e3_list"),
                 html.Li(f"Margen Neto ({top_efficiency_row["Category"]}): {top_efficiency_row["NetMarginPercentage"]}%", className="e3_list")
             ])

@@ -113,7 +113,7 @@ top_ticket_customer = df_customers.sort_values(by="AverageOrderValue", ascending
 app = dash.Dash(__name__)
 
 app.layout = html.Div(id="body",children=[
-    html.H1("AdventureWorks Analytics: Panel de control financiero y omnicanal mensual", className="e3_title", style={"margin-bottom":"50px"}),
+    html.H1("Panel de control financiero mensual - AdventureWorks", className="e3_title", style={"margin-bottom":"50px"}),
     html.Div(id="dropdown_div", className="e3_dropdown_div", children=[
             dcc.Dropdown(id="dropdown", className="e3_dropdown",
                         options = [

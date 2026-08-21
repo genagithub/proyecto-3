@@ -131,7 +131,7 @@ app.layout = html.Div(id="body",children=[
             html.H2("Categorías", style={"font-size":"1.15em","font-family":"sans-serif"}),
             html.P(f"Promedio (Margen Neto): {company_wide_net_margin_baseline}%", className="e3_mean"),
             html.Ul(className="e3_ul", children=[
-                html.Li(f"Volumen de ventas ({top_volume_row["Category"]}): {top_volume_market_share["TotalQuantity"]} uds.", className="e3_list"),
+                html.Li(f"Volumen de ventas ({top_volume_row["Category"]}): {top_volume_market_share["TotalQuantity"]}", className="e3_list"),
                 html.Li(f"Ingresos Brutos ({top_revenue_row["Category"]}): ${top_revenue_row["TotalGrossIncome"]}", className="e3_list"),
                 html.Li(f"Margen Neto ({top_efficiency_row["Category"]}): {top_efficiency_row["NetMarginPercentage"]}%", className="e3_list")
             ])

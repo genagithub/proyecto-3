@@ -5,218 +5,211 @@ import dash
 from dash import html, dcc
 from dash.dependencies import Input, Output
 
-with sqlite3.connect("data/sales_orders.db") as conn:
 
-    first_queries = conn.cursor()
+with sqlite3.connect("data/AdventureWorks.db") as conn:
 
-    first_queries.execute('''create view order_details_cash as
-                         select OrderID, od.ProductID, Quantity, Price * Quantity as product_cash from OrderDetails od
-                         join Products p on od.ProductID = p.ProductID;''')
+    query_profability = """
+    WITH LinearTransform AS (
+    SELECT sod.SalesOrderID,
+        sod.ProductID,
+        p.Name AS Product,
+        cat.Name AS Category,
+        sod.OrderQty AS Quantity,
+        sod.LineTotal AS GrossIncome,
+        (sod.OrderQty * p.StandardCost) AS ProductionCost,
+        (sod.LineTotal * 0.05) AS FregihtCost,
+        (sod.LineTotal * 0.08) AS TaxCost
+    FROM SalesOrderDetail sod
+    JOIN Product p ON sod.ProductID = p.ProductID
+    JOIN ProductCategory cat ON p.ProductCategoryID = cat.ProductCategoryID
+    )
+    SELECT Category,
+    SUM(Quantity) AS TotalQuantity,
+    ROUND(SUM(GrossIncome), 2) AS TotalGrossIncome,
+    ROUND(SUM(ProductionCost), 2) AS TotalProductionCost,
+    ROUND(SUM(FregihtCost), 2) AS TotalFregihtCost,
+    ROUND(SUM(TaxCost), 2) AS TotalTaxCost,
+    ROUND(SUM(GrossIncome - ProductionCost - FregihtCost - TaxCost), 2) AS TotalNetProfit,
+    ROUND((SUM(GrossIncome - ProductionCost - FregihtCost - TaxCost) / SUM(GrossIncome)) * 100, 2) AS NetMarginPercentage
+    FROM LinearTransform
+    GROUP BY Category
+    ORDER BY TotalNetProfit DESC;
+    """
 
-    first_queries.execute('''create view products_revenue as
-                         select p.ProductID, ProductName, sum(product_cash) as product_revenue, sum(Quantity) from order_details_cash odc
-                         join Products p on p.ProductID = odc.ProductID
-                         group by p.ProductID;''')
+    df_profability = pd.read_sql_query(query_profability, conn)
 
-    first_queries.execute('''select * from products_revenue where product_revenue > (select avg(product_revenue) from products_revenue)
-                         order by product_revenue desc''')
+    query_territory = """
+    WITH TerritoryTransformation AS (
+    SELECT
+        CASE
+            WHEN soh.SalesOrderID % 2 = 0 THEN 'E-Commerce'
+            ELSE 'Retail Store'
+        END AS SalesChannel,
+        IFNULL(a.CountryRegion, 'United States') AS Country,
+        soh.SubTotal AS Sales,
+        (soh.Freight + soh.TaxAmt) AS MonthlyOperatingCosts
+    FROM SalesOrderHeader soh
+    LEFT JOIN Address a ON soh.ShipToAddressID = a.AddressID
+    )
+    SELECT SalesChannel,
+    Country,
+    COUNT(*) AS TotalOrders,
+    ROUND(SUM(Sales), 2) AS MonthlySales,
+    ROUND(SUM(MonthlyOperatingCosts), 2) AS MonthlyCosts,
+    ROUND(SUM(Sales - MonthlyOperatingCosts), 2) AS NetProfit,
+    ROUND((SUM(Sales - MonthlyOperatingCosts) / SUM(Sales)) * 100, 2) AS NetMarginPercentage
+    FROM TerritoryTransformation
+    GROUP BY SalesChannel, Country
+    ORDER BY NetProfit DESC;    
+    """
 
-    df_products = pd.DataFrame(first_queries.fetchall())
+    df_territory = pd.read_sql_query(query_territory, conn)
 
-    second_queries = conn.cursor()
+    query_customers = """
+    SELECT CustomerID,
+    COUNT(SalesOrderID) AS TotalOrders,
+    ROUND(SUM(SubTotal), 2) AS TotalSpend,
+    ROUND(AVG(SubTotal), 2) AS AverageOrderValue,
+    CASE
+        WHEN SalesOrderID % 2 = 0 THEN 'E-Commerce'
+        ELSE 'Retail Store'
+    END AS SalesChannel
+    FROM SalesOrderHeader
+    GROUP BY CustomerID
+    ORDER BY TotalSpend DESC
+    LIMIT 10;
+    """
+    
+    df_customers = pd.read_sql_query(query_customers, conn)
 
-    second_queries.execute('''create view orders_revenue as
-                          select o.OrderID, sum(product_cash) as order_revenue, sum(Quantity) as total_quantity, EmployeeID from order_details_cash odc
-                          join Orders o on o.OrderID = odc.OrderID
-                          group by o.OrderID
-                          order by order_revenue desc;''')
+total_company_revenue = df_profability["TotalGrossIncome"].sum()
+total_company_net_profit = df_profability["TotalNetProfit"].sum()
+company_wide_net_margin_baseline = (total_company_net_profit / total_company_revenue) * 100
 
-    second_queries.execute('select * from orders_revenue where order_revenue > (select avg(order_revenue) from orders_revenue)')
+top_volume_row = df_profability.sort_values(by="TotalSales", ascending=False).iloc[0]
+global_total_units = df_profability["TotalSales"].sum()
+top_volume_market_share = (top_volume_row["TotalSales"] / global_total_units) * 100
 
-    df_orders = pd.DataFrame(second_queries.fetchall())
+top_revenue_row = df_profability.sort_values(by="TotalGrossIncome", ascending=False).iloc[0]
 
-    third_queries = conn.cursor()
+top_efficiency_row = df_profability.sort_values(by="NetMarginPercentage", ascending=False).iloc[0]
 
-    third_queries.execute('''select e.EmployeeID, FirstName || " " || LastName, sum(order_revenue) as employee_revenue, sum(total_quantity) from Employees e
-                         join orders_revenue o on o.EmployeeID = e.EmployeeID 
-                         group by e.EmployeeID
-                         order by employee_revenue''')
+total_company_orders = df_territory["TotalOrders"].sum()
+total_company_costs = df_territory["MonthlyCosts"].sum()
+company_cost_per_order_baseline = total_company_costs / total_company_orders
 
+top_regional_volume = df_territory.sort_values(by="TotalOrders", ascending=False).iloc
 
-    df_employees = pd.DataFrame(third_queries.fetchall())
+top_regional_profit = df_territory.sort_values(by="NetProfit", ascending=False)
 
-df_products.columns = ["product_id","product","product_revenue","total_quantity"]
-df_orders.drop(3,axis=1,inplace=True)
-df_orders.columns = ["order_id","order_revenue","total_quantity"]
-df_orders["order_id"] = df_orders["order_id"].astype(str)
-df_employees.columns = ["employee_id","name","employee_revenue","total_quantity"]
+df_territory["CostPerOrder"] = df_territory["MonthlyCosts"] / df_territory["TotalOrders"]
+top_cost_efficiency = df_territory.sort_values(by="CostPerOrder", ascending=True).iloc
 
-mean_products = df_products["product_revenue"].mean()
-mean_orders = df_orders["order_revenue"].mean()
-mean_employees = df_employees["employee_revenue"].mean()
+total_spend_global = df_customers["TotalSpend"].sum()
+total_orders_global = df_customers["TotalOrders"].sum()
+company_wide_aov_baseline = total_spend_global / total_orders_global
 
-best_product = df_products.iloc[0,:] 
-best_order = df_orders.iloc[0,:] 
-df_employees.sort_values(by="employee_revenue", ascending=False, inplace=True)
-best_employee = df_employees.iloc[0,:] 
+top_monetary_customer = df_customers.sort_values(by="TotalSpend", ascending=False).iloc[0]
+
+top_frequency_customer = df_customers.sort_values(by="TotalOrders", ascending=False).iloc[0]
+
+top_ticket_customer = df_customers.sort_values(by="AverageOrderValue", ascending=False).iloc[0]
 
 app = dash.Dash(__name__)
-server = app.server
 
 app.layout = html.Div(id="body",children=[
-    html.A(href="https://github.com/genagithub/proyecto-3/blob/main/README.md",children=[html.H1("Análisis operacional y desempeño comercial",id="title",className="e3_title")]),
-    html.Div(id="dropdown_div",className="e3_dropdown_div",children=[
-            dcc.Dropdown(id="dropdown",className="e3_dropdown",
+    html.H1("AdventureWorks Analytics: Panel de control financiero y omnicanal de E-Commerce", className="e3_title", style={"margin-bottom":"50px"}),
+    html.Div(id="dropdown_div", className="e3_dropdown_div", children=[
+            dcc.Dropdown(id="dropdown", className="e3_dropdown",
                         options = [
-                            {"label":"Empleados","value":"name"},
-                            {"label":"Productos","value":"product"},
-                            {"label":"Órdenes","value":"order_id"}
+                            {"label":"Categorías","value":"Category"},
+                            {"label":"Canal de ventas","value":"SalesChannel"},
+                            {"label":"Clientes","value":"CustomerID"}
                         ],
                         value="name",
                         multi=False,
                         clearable=False)
     ]),
-    dcc.Graph(id="graph-1",figure={}),
-    html.H2("Palancas de negocio",className="e3_title"),
-    html.Div(className="e3_container",children=[
-        html.Div(id="data_1",className="e3_children",style={"color":"blue"},children=[   
-            html.H2("Productos",style={"font-size":"1.15em","color":"blue","font-family":"sans-serif"}),
-            html.P(f"Promedio: {round(mean_products,1)}$",className="e3_mean",style={"color":"blue"}),         
-            html.Ul(className="e3_ul",style={"color":"blue"},children=[
-                html.Li(f"Producto: {best_product["product"]}",className="e3_list"),
-                html.Li(f"Unidades vendidas: {best_product["total_quantity"]}",className="e3_list"),
-                html.Li(f"Ingreso total: {best_product["product_revenue"]}$",className="e3_list")
+    dcc.Graph(id="figure-1", figure={}),
+    html.H2("Palancas de negocio", className="e3_title"),
+    html.Div(className="e3_container", children=[
+        html.Div(id="data_1", className="e3_children",style={"color":"blue"}, children=[
+            html.H2("Categorías", style={"font-size":"1.15em","color":"blue","font-family":"sans-serif"}),
+            html.P(f"Promedio (Margen Neto): {company_wide_net_margin_baseline}", className="e3_mean", style={"color":"blue"}),
+            html.Ul(className="e3_ul", style={"color":"blue"}, children=[
+                html.Li(f"Volumen de ventas ({top_volume_row["Category"]}): {top_volume_market_share["TotalSales"]}", className="e3_list"),
+                html.Li(f"Ingresos brutos ({top_revenue_row["Category"]}): {top_revenue_row["TotalGrossIncome"]}$", className="e3_list"),
+                html.Li(f"Margen Neto ({top_efficiency_row["Category"]}): {top_efficiency_row["NetMarginPercentage"]}", className="e3_list")
             ])
         ]),
-        html.Div(id="data_2",className="e3_children",children=[
-            html.H2("Empleados",style={"font-size":"1.15em","color":"red","font-family":"sans-serif"}),
-            html.P(f"Promedio: {round(mean_employees,1)}$",className="e3_mean",style={"color":"red"}),
-            html.Ul(className="e3_ul",style={"color":"red"},children=[
-                html.Li(f"Nombre: {best_employee["name"]}",className="e3_list"),
-                html.Li(f"Cantidad total: {best_employee["total_quantity"]} uds.",className="e3_list"),
-                html.Li(f"Ingreso total: {best_employee["employee_revenue"]}$",className="e3_list")
+        html.Div(id="data_2", className="e3_children", children=[
+            html.H2("Territorios", style={"font-size":"1.15em","color":"red","font-family":"sans-serif"}),
+            html.P(f"Promedio (CPO): {company_cost_per_order_baseline}", className="e3_mean", style={"color":"red"}),
+            html.Ul(className="e3_ul", style={"color":"red"}, children=[
+                html.Li(f"Volumen de órdenes ({top_regional_volume["SalesChannel"]}): {top_regional_volume["TotalOrders"]}", className="e3_list"),
+                html.Li(f"Ganancia Neta ({top_regional_profit["SalesChannel"]}): {top_regional_profit["NetProfit"]}", className="e3_list"),
+                html.Li(f"Eficiencia de costos ({top_cost_efficiency["SalesChannel"]}): {top_cost_efficiency["CostPerOrder"]}", className="e3_list")
             ])
         ]),
-        html.Div(id="data_3",className="e3_children",children=[
-            html.H2("Órdenes",style={"font-size":"1.15em","color":"green","font-family":"sans-serif"}),
-            html.P(f"Promedio: {round(mean_orders,1)}$",className="e3_mean",style={"color":"green"}),
-            html.Ul(className="e3_ul",style={"color":"green"},children=[
-                html.Li(f"ID de órden: {best_order["order_id"]}",className="e3_list"),
-                html.Li(f"Cantidad total: {best_order["total_quantity"]} uds.",className="e3_list"),
-                html.Li(f"Ingreso total: {best_order["order_revenue"]}$",className="e3_list")
+        html.Div(id="data_3", className="e3_children", children=[
+            html.H2("Clientes", style={"font-size":"1.15em","color":"green","font-family":"sans-serif"}),
+            html.P(f"Promedio (AOV): {company_wide_aov_baseline}", className="e3_mean", style={"color":"green"}),
+            html.Ul(className="e3_ul",style={"color":"green"}, children=[
+                html.Li(f"Total gastado ({top_monetary_customer["CustomerID"]}): {top_monetary_customer["TotalSpend"]}", className="e3_list"),
+                html.Li(f"Frecuencia ({top_frequency_customer["CustomerID"]}): {top_frequency_customer["TotalOrders"]}", className="e3_list"),
+                html.Li(f"Valor promedio de órden ({top_ticket_customer["CustomerID"]}): {top_ticket_customer["AverageOrderValue"]}", className="e3_list")
             ])
-        ]) 
+        ])
     ]),
-    html.Div(id="dropdown_2_div",className="e3_div_dropdown",children=[
-        dcc.Dropdown(id="dropdown_employees",className="e3_dropdown",
-                    options=df_employees["name"].tolist(),
-                    value=df_employees["name"].iloc[0],
+    html.Div(id="dropdown_2_div", className="e3_div_dropdown", children=[
+        dcc.Dropdown(id="dropdown_category", className="e3_dropdown",
+                    options=df_profability["Category"].tolist(),
+                    value=df_profability["Category"].iloc[0],
                     multi=False,
                     clearable=False),
-        dcc.Dropdown(id="dropdown_products",className="e3_dropdown",
-                    options=df_products["product"].tolist(),
-                    value=df_products["product"].iloc[0],
+        dcc.Dropdown(id="dropdown_sales_channel", className="e3_dropdown",
+                    options=df_territory["SalesChannel"].tolist(),
+                    value=df_territory["SalesChannel"].iloc[0],
                     multi=False,
                     clearable=False),
-        dcc.Dropdown(id="dropdown_orders",className="e3_dropdown",
-                    options=df_orders["order_id"].tolist(),
-                    value=df_orders["order_id"].iloc[0],
+        dcc.Dropdown(id="dropdown_customer", className="e3_dropdown",
+                    options=df_customers["CustomerID"].tolist(),
+                    value=df_customers["CustomerID"].iloc[0],
                     multi=False,
                     clearable=False)
     ]),
-    dcc.Graph(id="graph-2",figure={})
+    dcc.Graph(id="figure-2",figure={})
 ])
 
 @app.callback(
-    [Output(component_id="graph-1",component_property="figure"),
-    Output(component_id="dropdown_employees",component_property="style"),
-    Output(component_id="dropdown_products",component_property="style"),
-    Output(component_id="dropdown_orders",component_property="style"),
-    Output(component_id="graph-2",component_property="figure")],
-    [Input(component_id="dropdown",component_property="value"),
-    Input(component_id="dropdown_employees",component_property="value"),
-    Input(component_id="dropdown_products",component_property="value"),
-    Input(component_id="dropdown_orders",component_property="value")]
+    [Output(component_id="figure-1", component_property="figure"),
+    Output(component_id="dropdown_category", component_property="style"),
+    Output(component_id="dropdown_sales_channel", component_property="style"),
+    Output(component_id="dropdown_customer", component_property="style"),
+    Output(component_id="figure-2", component_property="figure")],
+    [Input(component_id="dropdown", component_property="value"),
+    Input(component_id="dropdown_category", component_property="value"),
+    Input(component_id="dropdown_sales_channel", component_property="value"),
+    Input(component_id="dropdown_customer" component_property="value")]
 )
 
-def update_graph(slct_data, slct_employee, slct_product, slct_order):
-    
-    employees_style = {"position":"absolute","top":"0","left":"0"}
-    products_style = {"position":"absolute","top":"0","left":"0"}
-    orders_style = {"position":"absolute","top":"0","left":"0"}
-    
-    if slct_data == "name":
-        
-        graph_1 = px.bar(df_employees, x=slct_data, y="employee_revenue", color_discrete_sequence=["red"], text_auto=".2s", title="Ingresos de empleados", labels=dict(name="Empleados", employee_revenue="Ingresos"))
-        
-        employees_style["zIndex"] = 5
+def update_dashboard(slct_data, slct_category, slct_sales_channel, slct_customer):
 
-        employee = df_employees.loc[df_employees["name"] == slct_employee, "employee_id"].values[0]
+    category_style = {"position":"absolute","top":"0","left":"0"}
+    sales_channel_style = {"position":"absolute","top":"0","left":"0"}
+    customer_style = {"position":"absolute","top":"0","left":"0"}
 
-        with sqlite3.connect("data/sales_orders.db") as conn:
-            get_employee = conn.cursor()
-            get_employee.execute(f'''select ProductName, sum(product_cash) from order_details_cash odc
-                                 join Products p on p.ProductID = odc.ProductID
-                                 join Orders o on o.OrderID = odc.OrderID join Employees e on o.EmployeeID = e.EmployeeID
-                                 where e.EmployeeID = {employee}
-                                 group by p.ProductID''')
-            employee_products = pd.DataFrame(get_employee.fetchall())
+    # if slct_data == "Category":
 
-        employee_products.columns = ["product","revenue"]
 
-        graph_2 = px.treemap(employee_products, path=["product"], values="revenue", color="revenue", color_continuous_scale="Viridis")
-        graph_2.update_layout(title_text=f"Distribución de productos vendidos por el empleado {slct_employee}", coloraxis_colorbar_title_text="Ingresos")
-                
-    elif slct_data == "product":
-        
-        graph_1 = px.bar(df_products, x=slct_data, y="product_revenue", color_discrete_sequence=["blue"], text_auto=".2s", title="Ingresos de productos mayores al promedio", labels=dict(product="Productos", product_revenue="Ingresos"))
-        graph_1.update_xaxes(tickangle=35, tickfont_size=8)
-        
-        products_style["zIndex"] = 5
-                
-        product = df_products.loc[df_products["product"] == slct_product, "product_id"].values[0]
+    # elif slct_data == "Country":
 
-        with sqlite3.connect("data/sales_orders.db") as conn:        
-            get_product = conn.cursor()
-            get_product.execute(f'''select OrderID,  sum(Quantity), sum(product_cash), c.CustomerName from order_details_cash odc
-                                join Products p on odc.ProductID = p.ProductID
-                                join Categories c on p.CategoryID = c.CategoryID
-                                where odc.ProductID = {product}
-                                group by OrderID''')
-            product_orders = pd.DataFrame(get_product.fetchall())
 
-        product_orders.columns = ["order_id","quantity","revenue","category"]
-        cat_name = product_orders["category"].iloc[0]
+    # elif slct_data == "CustomerID":
 
-        graph_2 = px.treemap(product_orders, path=["order_id"], values="quantity", color="revenue", color_continuous_scale="Viridis")
-        graph_2.update_layout(title_text=f"Distribución en {slct_product} (categoría: {cat_name}) por cantidad e ingresos", coloraxis_colorbar_title_text="Ingresos")
-        
-    elif slct_data == "order_id":
-        
-        graph_1 = px.bar(df_orders, x=slct_data, y="order_revenue", color_discrete_sequence=["green"], title="Ingresos de órdenes mayores al promedio", labels=dict(order_id="Órdenes", order_revenue="Ingresos"))
-        graph_1.update_xaxes(tickfont_size=9)
-        
-        orders_style["zIndex"] = 5
 
-        order = df_orders.loc[df_orders["order_id"] == slct_order, "order_id"].values[0]
+    return figure_1, category_style, sales_channel_style, customer_style, figure_2
 
-        with sqlite3.connect("data/sales_orders.db") as conn:        
-            get_order = conn.cursor()
-            get_order.execute(f'''select p.ProductName, sum(odc.product_cash), c.CustomerName from order_details_cash odc
-                             join Products p on p.ProductID = odc.ProductID
-                             join Orders o on o.OrderID = odc.OrderID
-                             join Customers c on o.CustomerID = c.CustomerID
-                             where odc.OrderID = {order}
-                             group by p.ProductID''')
-            order_products = pd.DataFrame(get_order.fetchall())
-
-        order_products.columns = ["product","revenue","customer"]
-        customer_name = order_products["customer"].iloc[0]
-
-        graph_2 = px.treemap(order_products, path=["product"], values="revenue", color="revenue", color_continuous_scale="Viridis")
-        graph_2.update_layout(title_text=f"Concentración de productos en la órden #{order} (cliente: {customer_name})", coloraxis_colorbar_title_text="Ingresos")
-            
-    return graph_1, employees_style, products_style, orders_style, graph_2    
     
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 8050)) 

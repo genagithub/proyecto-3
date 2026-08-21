@@ -124,7 +124,7 @@ app.layout = html.Div(id="body",children=[
                         multi=False,
                         clearable=False)
     ]),
-    dcc.Graph(id="figure-1", figure={}),
+    dcc.Graph(id="figure-1", className="e3_figure", figure={}),
     html.H2("Palancas de negocio", className="e3_title"),
     html.Div(className="e3_container", children=[
         html.Div(id="data_1", className="e3_children", children=[
@@ -172,7 +172,7 @@ app.layout = html.Div(id="body",children=[
                     multi=False,
                     clearable=False)
     ]),
-    dcc.Graph(id="figure-2",figure={})
+    dcc.Graph(id="figure-2", className="e3_figure", figure={})
 ])
 
 @app.callback(

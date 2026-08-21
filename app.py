@@ -111,6 +111,7 @@ top_frequency_customer = df_customers.sort_values(by="TotalOrders", ascending=Fa
 top_ticket_customer = df_customers.sort_values(by="AverageOrderValue", ascending=False).iloc[0]
 
 app = dash.Dash(__name__)
+server = app.server
 
 app.layout = html.Div(id="body",children=[
     html.H1("Panel de control financiero mensual - AdventureWorks", className="e3_title", style={"margin-bottom":"50px"}),

@@ -235,8 +235,8 @@ def update_dashboard(slct_data, slct_category, slct_sales_channel, slct_customer
             y="MonthlySales",
             color="Country",
             barmode="group",
-            title="Ventas Mensuales por Canal y Territorio",
-            labels={"MonthlySales": "Ventas ($)", "SalesChannel": "Canal de Ventas"},
+            title="Ventas del Mes por Canal y Territorio",
+            labels={"MonthlySales": "Ingreso ($)", "SalesChannel": "Canal de Ventas"},
             template="plotly_dark"
         )
 

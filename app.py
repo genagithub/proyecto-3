@@ -126,7 +126,7 @@ app.layout = html.Div(id="body", className="e3_body", children=[
                         multi=False,
                         clearable=False)
     ]),
-    dcc.Graph(id="figure-1", style={"width":"80%","margin-bottom":"25px"}, figure={}),
+    dcc.Graph(id="figure-1", style={"width":"75%","margin-bottom":"30px"}, figure={}),
     html.H2("Palancas de negocio", className="e3_title"),
     html.Div(className="e3_container", children=[
         html.Div(id="data_1", className="e3_children", children=[
@@ -174,7 +174,7 @@ app.layout = html.Div(id="body", className="e3_body", children=[
                     multi=False,
                     clearable=False)
     ]),
-    dcc.Graph(id="figure-2", style={"width":"80%","margin-bottom":"25px"}, figure={})
+    dcc.Graph(id="figure-2", style={"width":"75%","margin-bottom":"30px"}, figure={})
 ])
 
 @app.callback(
@@ -210,7 +210,7 @@ def update_dashboard(slct_data, slct_category, slct_sales_channel, slct_customer
             barmode="group",
             title="Ingreso Bruto vs Ganancia Neta",
             labels={"TotalGrossIncome": "Ingreso Bruto ($)", "TotalNetProfit": "Ganancia Neta ($)", "Category": "Categoría"},
-            template="plotly_dark"
+            template="plotly_white"
         )
 
         df_filtered = df_category[df_category["Category"] == slct_category]
@@ -220,7 +220,7 @@ def update_dashboard(slct_data, slct_category, slct_sales_channel, slct_customer
               names=["Costo de Producción", "Costo de Flete", "Costo de Impuesto", "Ganancia Neta"],
               values=[row["TotalProductionCost"], row["TotalFreightCost"], row["TotalTaxCost"], row["TotalNetProfit"]],
               title=f"Descomposición Financiera: {slct_category} (Margen Neto de Junio: {row["NetMarginPercentage"]:.1f}%)",
-              template="plotly_dark",
+              template="plotly_white",
               hole=0.4,
               color_discrete_sequence=px.colors.qualitative.Pastel
         )
@@ -237,7 +237,7 @@ def update_dashboard(slct_data, slct_category, slct_sales_channel, slct_customer
             barmode="group",
             title="Ventas del Mes por Canal y Territorio",
             labels={"MonthlySales": "Ingreso ($)", "SalesChannel": "Canal de Ventas"},
-            template="plotly_dark"
+            template="plotly_white"
         )
 
         df_filtered = df_sales_channel[df_sales_channel["SalesChannel"] == slct_sales_channel]
@@ -248,7 +248,7 @@ def update_dashboard(slct_data, slct_category, slct_sales_channel, slct_customer
             y="NetMarginPercentage",
             title=f"Eficiencia del Margen Neto por País para el Canal: {slct_sales_channel}",
             labels={"NetMarginPercentage": "Margen Neto (%)", "Country": "País"},
-            template="plotly_dark"
+            template="plotly_white"
         ).update_traces(marker_color="#34d399")
 
     elif slct_data == "CustomerID":
@@ -262,7 +262,7 @@ def update_dashboard(slct_data, slct_category, slct_sales_channel, slct_customer
             color="SalesChannel",
             title="Top 10 Clientes VIP por Gasto Total Acumulado",
             labels={"TotalSpend": "Gasto Total ($)", "CustomerID": "ID"},
-            template="plotly_dark"
+            template="plotly_white"
         )
 
         df_filtered = df_customers[df_customers["CustomerID"] == int(slct_customer)]
@@ -273,7 +273,7 @@ def update_dashboard(slct_data, slct_category, slct_sales_channel, slct_customer
               y= [row["TotalSpend"], row["AverageOrderValue"]],
               title=f"Perfil Financiero Individual del Cliente ID: {slct_customer}",
               labels={"x": "Métrica Comercial", "y": "Valor ($)"},
-              template="plotly_dark"
+              template="plotly_white"
         ).update_traces(marker_color="#10b981")
 
     else:

@@ -1,3 +1,11 @@
+body{
+  display: felx;
+  flex-direction:column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  heiht: 100%;
+}
 a{
   text-decoration: none;
   margin-bottom: 50px;

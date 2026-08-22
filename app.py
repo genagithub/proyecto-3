@@ -115,8 +115,8 @@ server = app.server
 
 app.layout = html.Div(id="body", className="e3_body", children=[
     html.H1("Panel de control financiero mensual - AdventureWorks", className="e3_title", style={"margin-bottom":"50px"}),
-    html.Div(id="dropdown_div", className="e3_div_dropdown", style={"position":"absolute","top":"0","left":"0"}, children=[
-            dcc.Dropdown(id="dropdown", className="e3_dropdown",
+    html.Div(id="dropdown_div", className="e3_div_dropdown", children=[
+            dcc.Dropdown(id="dropdown", className="e3_dropdown", style={"position":"absolute","top":"0","left":"0"},
                         options = [
                             {"label":"Categorías","value":"Category"},
                             {"label":"Canal de ventas","value":"SalesChannel"},
@@ -214,7 +214,7 @@ def update_dashboard(slct_data, slct_category, slct_sales_channel, slct_customer
         )
 
         df_filtered = df_category[df_category["Category"] == slct_category]
-        row = df_filtered.iloc[0]
+        row = df_filtered.iloc[0,:]
 
         figure_2 = px.pie(
               names=["Costo de Producción", "Costo de Flete", "Costo de Impuesto", "Ganancia Neta"],

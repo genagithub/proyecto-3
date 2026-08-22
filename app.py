@@ -18,7 +18,7 @@ with sqlite3.connect("data/AdventureWorks.db") as conn:
         sod.OrderQty AS Quantity,
         sod.LineTotal AS GrossIncome,
         (sod.OrderQty * p.StandardCost) AS ProductionCost,
-        (sod.LineTotal * 0.05) AS FregihtCost,
+        (sod.LineTotal * 0.05) AS FreightCost,
         (sod.LineTotal * 0.08) AS TaxCost
     FROM SalesOrderDetail sod
     JOIN Product p ON sod.ProductID = p.ProductID
@@ -28,7 +28,7 @@ with sqlite3.connect("data/AdventureWorks.db") as conn:
     SUM(Quantity) AS TotalQuantity,
     ROUND(SUM(GrossIncome), 2) AS TotalGrossIncome,
     ROUND(SUM(ProductionCost), 2) AS TotalProductionCost,
-    ROUND(SUM(FregihtCost), 2) AS TotalFregihtCost,
+    ROUND(SUM(FregihtCost), 2) AS TotalFreightCost,
     ROUND(SUM(TaxCost), 2) AS TotalTaxCost,
     ROUND(SUM(GrossIncome - ProductionCost - FregihtCost - TaxCost), 2) AS TotalNetProfit,
     ROUND((SUM(GrossIncome - ProductionCost - FregihtCost - TaxCost) / SUM(GrossIncome)) * 100, 2) AS NetMarginPercentage
@@ -214,11 +214,11 @@ def update_dashboard(slct_data, slct_category, slct_sales_channel, slct_customer
         )
 
         df_filtered = df_category[df_category["Category"] == slct_category]
-        row = df_filtered.iloc[0,:]
+        row = df_filtered.iloc[0]
 
         figure_2 = px.pie(
               names=["Costo de Producción", "Costo de Flete", "Costo de Impuesto", "Ganancia Neta"],
-              values=[row["TotalProductionCost"], row["TotalFregihtCost"], row["TotalTaxCost"], row["TotalNetProfit"]],
+              values=[row["TotalProductionCost"], row["TotalFreightCost"], row["TotalTaxCost"], row["TotalNetProfit"]],
               title=f"Descomposición Financiera: {slct_category} (Margen Neto de Junio: {row["NetMarginPercentage"]:.1f}%)",
               template="plotly_dark",
               hole=0.4,

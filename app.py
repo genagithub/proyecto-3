@@ -130,7 +130,7 @@ app.layout = html.Div(id="body", className="e3_body", children=[
     html.H2("Palancas de negocio", className="e3_title"),
     html.Div(className="e3_container", children=[
         html.Div(id="data_1", className="e3_children", children=[
-            html.H2("Categorías", style={"font-size":"1.15em","font-family":"sans-serif"}),
+            html.H2("Categorías", className="e3_h2"),
             html.P(f"Promedio (Margen Neto): {round(company_wide_net_margin_baseline, 2)}%", className="e3_mean"),
             html.Ul(className="e3_ul", children=[
                 html.Li(f"Volumen de ventas ({top_volume_row["Category"]}): {round(top_volume_market_share)}", className="e3_list"),
@@ -139,7 +139,7 @@ app.layout = html.Div(id="body", className="e3_body", children=[
             ])
         ]),
         html.Div(id="data_2", className="e3_children", children=[
-            html.H2("Canal de ventas", style={"font-size":"1.15em","font-family":"sans-serif"}),
+            html.H2("Canal de ventas", className="e3_h2"),
             html.P(f"Promedio (CPO): ${round(company_cost_per_order_baseline, 2)}", className="e3_mean"),
             html.Ul(className="e3_ul", children=[
                 html.Li(f"Volumen de órdenes ({top_regional_volume["SalesChannel"]}): {top_regional_volume["TotalOrders"]}", className="e3_list"),
@@ -148,7 +148,7 @@ app.layout = html.Div(id="body", className="e3_body", children=[
             ])
         ]),
         html.Div(id="data_3", className="e3_children", children=[
-            html.H2("Clientes", style={"font-size":"1.15em","font-family":"sans-serif"}),
+            html.H2("Clientes", className="e3_h2"),
             html.P(f"Promedio (AOV): ${round(company_wide_aov_baseline, 2)}", className="e3_mean"),
             html.Ul(className="e3_ul", children=[
                 html.Li(f"Gasto total ({top_monetary_customer["CustomerID"]}): ${top_monetary_customer["TotalSpend"]}", className="e3_list"),

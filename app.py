@@ -174,7 +174,7 @@ app.layout = html.Div(id="body", className="e3_body", children=[
                     multi=False,
                     clearable=False)
     ]),
-    dcc.Graph(id="figure-2", style={"width":"75%","margin-bottom":"30px"}, figure={})
+    dcc.Graph(id="figure-2", style={"width":"75%","margin-bottom":"20px"}, figure={})
 ])
 
 @app.callback(

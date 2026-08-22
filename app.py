@@ -131,25 +131,25 @@ app.layout = html.Div(id="body",children=[
     html.Div(className="e3_container", children=[
         html.Div(id="data_1", className="e3_children", children=[
             html.H2("Categorías", style={"font-size":"1.15em","font-family":"sans-serif"}),
-            html.P(f"Promedio (Margen Neto): {company_wide_net_margin_baseline}%", className="e3_mean"),
+            html.P(f"Promedio (Margen Neto): {round(company_wide_net_margin_baseline, 2)}%", className="e3_mean"),
             html.Ul(className="e3_ul", children=[
-                html.Li(f"Volumen de ventas ({top_volume_row["Category"]}): {top_volume_market_share}", className="e3_list"),
+                html.Li(f"Volumen de ventas ({top_volume_row["Category"]}): {round(top_volume_market_share)}", className="e3_list"),
                 html.Li(f"Ingresos Brutos ({top_revenue_row["Category"]}): ${top_revenue_row["TotalGrossIncome"]}", className="e3_list"),
                 html.Li(f"Margen Neto ({top_efficiency_row["Category"]}): {top_efficiency_row["NetMarginPercentage"]}%", className="e3_list")
             ])
         ]),
         html.Div(id="data_2", className="e3_children", children=[
             html.H2("Canal de ventas", style={"font-size":"1.15em","font-family":"sans-serif"}),
-            html.P(f"Promedio (CPO): ${company_cost_per_order_baseline}", className="e3_mean"),
+            html.P(f"Promedio (CPO): ${round(company_cost_per_order_baseline, 2)}", className="e3_mean"),
             html.Ul(className="e3_ul", children=[
                 html.Li(f"Volumen de órdenes ({top_regional_volume["SalesChannel"]}): {top_regional_volume["TotalOrders"]}", className="e3_list"),
                 html.Li(f"Ganancia Neta ({top_regional_profit["SalesChannel"]}): ${top_regional_profit["NetProfit"]}", className="e3_list"),
-                html.Li(f"Eficiencia de costos ({top_cost_efficiency["SalesChannel"]}): {top_cost_efficiency["CostPerOrder"]}", className="e3_list")
+                html.Li(f"Eficiencia de costos ({top_cost_efficiency["SalesChannel"]}): ${round(top_cost_efficiency["CostPerOrder"], 2)}", className="e3_list")
             ])
         ]),
         html.Div(id="data_3", className="e3_children", children=[
             html.H2("Clientes", style={"font-size":"1.15em","font-family":"sans-serif"}),
-            html.P(f"Promedio (AOV): ${company_wide_aov_baseline}", className="e3_mean"),
+            html.P(f"Promedio (AOV): ${round(company_wide_aov_baseline, 2)}", className="e3_mean"),
             html.Ul(className="e3_ul", children=[
                 html.Li(f"Gasto total ({top_monetary_customer["CustomerID"]}): ${top_monetary_customer["TotalSpend"]}", className="e3_list"),
                 html.Li(f"Frecuencia ({top_frequency_customer["CustomerID"]}): {top_frequency_customer["TotalOrders"]}", className="e3_list"),

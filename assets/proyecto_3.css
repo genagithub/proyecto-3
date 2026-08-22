@@ -45,8 +45,9 @@ h1:hover{
     flex-direction: column;
 }
 .e3_list{
-    font-size:0.8em;
+    font-size:1em;
     font-family:'no-roboto',sans-serif;
+    font-weight: bold;
     margin: 3px 10px 0 0;
 }
 .e3_mean{

@@ -206,10 +206,10 @@ def update_dashboard(slct_data, slct_category, slct_sales_channel, slct_customer
         figure_1 = px.bar(
             df_category,
             x="Category",
-            y=["TotalGrossIncome", "TotalProfitNet"],
+            y=["TotalGrossIncome", "TotalNetProfit"],
             barmode="group",
             title="Ingreso Bruto vs Ganancia Neta",
-            labels={"value": "Amount ($)", "variable": "Métrica Financiera", "Category": "Categoría"},
+            labels={"value": "Monto ($)", "variable": "Métrica Financiera", "Category": "Categoría"},
             template="plotly_dark"
         )
 

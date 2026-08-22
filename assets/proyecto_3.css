@@ -25,6 +25,10 @@ h1:hover{
     margin: 20px 7px;
     width: 160px;
 }
+.e3_graph{
+  width:75%;
+  box-shadow: box-shadow:4px 4px 15px 0 black;
+}
 .e3_container {
     width: 100%;
     margin: 35px 0 75px 0;

@@ -140,11 +140,11 @@ app.layout = html.Div(id="body", className="e3_body", children=[
         ]),
         html.Div(id="data_2", className="e3_children", children=[
             html.H2("Canal de ventas", className="e3_h2"),
-            html.P(f"Promedio (CPO): ${round(company_cost_per_order_baseline, 2)}", className="e3_mean"),
+            html.P(f"Promedio (Costo por órden): ${round(company_cost_per_order_baseline, 2)}", className="e3_mean"),
             html.Ul(className="e3_ul", children=[
                 html.Li(f"Volumen de órdenes ({top_regional_volume["SalesChannel"]}): {top_regional_volume["TotalOrders"]}", className="e3_list"),
                 html.Li(f"Ganancia Neta ({top_regional_profit["SalesChannel"]}): ${top_regional_profit["NetProfit"]}", className="e3_list"),
-                html.Li(f"Eficiencia de costos ({top_cost_efficiency["SalesChannel"]}): ${round(top_cost_efficiency["CostPerOrder"], 2)}", className="e3_list")
+                html.Li(f"Costo por órden ({top_cost_efficiency["SalesChannel"]}): ${round(top_cost_efficiency["CostPerOrder"], 2)}", className="e3_list")
             ])
         ]),
         html.Div(id="data_3", className="e3_children", children=[
@@ -153,7 +153,7 @@ app.layout = html.Div(id="body", className="e3_body", children=[
             html.Ul(className="e3_ul", children=[
                 html.Li(f"Gasto total ({top_monetary_customer["CustomerID"]}): ${top_monetary_customer["TotalSpend"]}", className="e3_list"),
                 html.Li(f"Frecuencia ({top_frequency_customer["CustomerID"]}): {top_frequency_customer["TotalOrders"]}", className="e3_list"),
-                html.Li(f"Valor promedio de órden ({top_ticket_customer["CustomerID"]}): ${top_ticket_customer["AverageOrderValue"]}", className="e3_list")
+                html.Li(f"AOV ({top_ticket_customer["CustomerID"]}): ${top_ticket_customer["AverageOrderValue"]}", className="e3_list")
             ])
         ])
     ]),

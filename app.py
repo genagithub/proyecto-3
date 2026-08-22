@@ -122,7 +122,7 @@ app.layout = html.Div(id="body", className="e3_body", children=[
                             {"label":"Canal de ventas","value":"SalesChannel"},
                             {"label":"Clientes","value":"CustomerID"}
                         ],
-                        value="name",
+                        value="Category",
                         multi=False,
                         clearable=False)
     ]),

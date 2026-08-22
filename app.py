@@ -209,7 +209,7 @@ def update_dashboard(slct_data, slct_category, slct_sales_channel, slct_customer
             y=["TotalGrossIncome", "TotalNetProfit"],
             barmode="group",
             title="Ingreso Bruto vs Ganancia Neta",
-            labels={"value": "Monto ($)", "variable": "Métrica Financiera", "Category": "Categoría"},
+            labels={"TotalGrossIncome": "Ingreso Bruto ($)", "TotalNetProfit": "Ganancia Neta ($)", "Category": "Categoría"},
             template="plotly_dark"
         )
 

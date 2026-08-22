@@ -28,7 +28,7 @@ with sqlite3.connect("data/AdventureWorks.db") as conn:
     SUM(Quantity) AS TotalQuantity,
     ROUND(SUM(GrossIncome), 2) AS TotalGrossIncome,
     ROUND(SUM(ProductionCost), 2) AS TotalProductionCost,
-    ROUND(SUM(FregihtCost), 2) AS TotalFreightCost,
+    ROUND(SUM(FreightCost), 2) AS TotalFreightCost,
     ROUND(SUM(TaxCost), 2) AS TotalTaxCost,
     ROUND(SUM(GrossIncome - ProductionCost - FregihtCost - TaxCost), 2) AS TotalNetProfit,
     ROUND((SUM(GrossIncome - ProductionCost - FregihtCost - TaxCost) / SUM(GrossIncome)) * 100, 2) AS NetMarginPercentage

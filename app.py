@@ -218,7 +218,7 @@ def update_dashboard(slct_data, slct_category, slct_sales_channel, slct_customer
 
         figure_2 = px.pie(
               names=["Costo de Producción", "Costo de Flete", "Costo de Impuesto", "Ganancia Neta"],
-              values=[row["TotalProductionCost"], row["TotalFreightCost"], row["TotalTaxCost"], row["TotalNetProfit"]],
+              values=[row["TotalProductionCost"], row["TotalFregihtCost"], row["TotalTaxCost"], row["TotalNetProfit"]],
               title=f"Descomposición Financiera: {slct_category} (Margen Neto de Junio: {row["NetMarginPercentage"]:.1f}%)",
               template="plotly_dark",
               hole=0.4,

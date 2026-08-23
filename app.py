@@ -114,7 +114,7 @@ app = dash.Dash(__name__)
 server = app.server
 
 app.layout = html.Div(id="body", className="e3_body", children=[
-    html.H1("Panel de control financiero mensual - AdventureWorks", className="e3_title", style={"margin-bottom":"50px"}),
+    html.A(href="https://github.com/genagithub/proyecto-3/blob/main/README.md", children=[html.H1("Panel de control financiero mensual - AdventureWorks", className="e3_title", style={"margin-bottom":"50px"})]),
     html.Div(id="dropdown_div", className="e3_div_dropdown", children=[
             dcc.Dropdown(id="dropdown", className="e3_dropdown", style={"position":"absolute","top":"0","left":"0"},
                         options = [

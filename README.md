@@ -8,7 +8,7 @@
      
 ---
 
-#### 🚀 Solución Analítica: Panel de Control Financiero por Entidades 
+#### 🚀 Solución Analítica: Panel de Control Financiero por DIMs 
 
 ---
 

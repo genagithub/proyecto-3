@@ -14,7 +14,7 @@ Se desarrolló un pipeline local migrado a un entorno portátil que centraliza l
 ---
 
 #### 🚀 Solución Analítica: Panel de Control Financiero por DIMs
-El resultado es una herramienta interactiva que traduce las relaciones realizadas en visualizaciones dinámicas cruzadas que permiten monitorear los indicadores críticos de rendimiento comercial junto con la observación de promedios globales y la comparación directa con las palancas de negocio de cada dimensión: 
+El resultado es una herramienta interactiva que traduce la lógica en visualizaciones dinámicas cruzadas que permiten monitorear los indicadores críticos de rendimiento comercial junto con la observación de promedios globales y la comparación directa con las palancas de negocio de cada dimensión: 
 - **Evaluación de Rentabilidad por Categoría:** Visualización agrupada de ingresos y ganancias netas que expone la anatomía de costos de cada línea de productos, revelando qué clases sostienen la caja del negocio.
 - **Monitoreo Omnicanal y Territorial:** Gráficos cruzados por país y canal de distribución que permiten aislar ineficiencias logísticas y comparar de forma instantánea el rendimiento de la tienda física frente al e-commerce.
 - **Analítica de Clientes VIP de Alto Valor:** Panel de segmentación individualizado que destaca a los usuarios de mayor gasto y frecuencia de compra, facilitando la creación de estrategias dirigidas a maximizar la retención.

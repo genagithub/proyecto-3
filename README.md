@@ -9,7 +9,7 @@ La gerencia comercial de AdventureWorks opera bajo un baseline financiero global
 Se desarrolló un pipeline local migrado a un entorno portátil que centraliza la información de forma eficiente. Mediante el uso de Python (Host) y SQL, se procesaron las transacciones directamente en el motor de la base de datos para garantizar la integridad y velocidad del flujo:
 - **Consultas Avanzadas de Integración Dimensional:** Uso de CTEs y uniones relacionales optimizadas para consolidar las tablas de hechos de ventas con los catálogos de productos, territorios y clientes en un único entorno portátil.
 - **Extracción de KPIs Medainte Funciones de Agregación :** Modelado matemático y financiero de márgenes netos reales, costos logísticos prorrateados y líneas de base globales ejecutados directamente en el servidor para evitar la sobrecarga de memoria.
-- **Segmentación Dinámica de Entidades:** Implementación de lógicas condicionales y filtros que permiten aislar el comportamiento individual de los compradores de alto valor frente a la eficiencia de la estrategia omnicanal o rentabilidad de categorías.
+- **Segmentación Dinámica en Entidades:** Implementación de lógicas condicionales y filtros que permiten aislar el comportamiento individual de las ocurrioencias como la eficiencia en la estrategia omnicanal o rentabilidad en categorías.
      
 ---
 

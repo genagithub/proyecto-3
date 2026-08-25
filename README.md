@@ -22,5 +22,5 @@ El resultado es una herramienta interactiva que traduce la lógica en visualizac
 
 ---
 
-#### 📌 Propósito de este Proyecto: Impacto Financiero 
+#### 📌 Propósito de este Proyecto: Impacto Directo
 **Eficiencia, Transparencia y Rentabilidad:** Optimiza la toma de decisiones gerenciales al visibilizar los márgenes netos reales y aislar las ineficiencias de costos del mes, transformando la incertidumbre de los datos en palancas estratégicas de crecimiento financiero.

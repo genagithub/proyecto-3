@@ -1,11 +1,11 @@
 ### 🎛️ Sistema Interactivo de Control Financiero y Dimensiones de Negocio
 
-#### 🎯 El Contexto del Problema 
+#### 🎯 Contexto del Problema de Negocio  
 La gerencia comercial de AdventureWorks opera bajo un baseline financiero global aceptable, pero carece de visibilidad atómica sobre la rentabilidad real de sus operaciones durante los cierres mensuales. Al consolidar el tramo correspondiente al mes de junio, el equipo de ventas y operaciones se enfrenta a una profunda incertidumbre provocada por la dispersión de sus datos relacionales, los cuales ocultan el impacto real de los costos de flete, impuestos y producción detrás de los ingresos brutos superficiales. Ante la falta de un flujo integrado, el objetivo es centralizar estas fuentes fragmentadas para aislar las ineficiencias logísticas interregionales, identificar con precisión el comportamiento de sus clientes de alto valor y determinar la verdadera eficiencia de su estrategia omnicanal antes de que concluya el ciclo operativo.
 
 ---
 
-#### 🛠️ Solución Técnica: Arquitectura e Integración
+#### 🛠️ Enfoque Técnico: Arquitectura e Integración
 Se desarrolló un pipeline local migrado a un entorno portátil que centraliza la información de forma eficiente. Mediante el uso de Python (Host) y SQL, se procesaron las transacciones directamente en el motor de la base de datos para garantizar la integridad y velocidad del flujo:
 - **Consultas Avanzadas de Integración Dimensional:** Uso de CTEs y uniones relacionales optimizadas para consolidar las tablas de hechos de ventas con los catálogos de productos, territorios y clientes en un único entorno portátil.
 - **Extracción de KPIs Medainte Funciones de Agregación :** Modelado matemático y financiero de márgenes netos reales, costos logísticos prorrateados y líneas de base globales ejecutados directamente en el servidor para evitar la sobrecarga de memoria.
@@ -22,5 +22,5 @@ El resultado es una herramienta interactiva que traduce la lógica en visualizac
 
 ---
 
-#### 📌 Propósito de este Proyecto: Impacto Operativo
+#### 📌 Propósito: Impacto Operativo
 **Eficiencia, Transparencia y Rentabilidad:** Optimiza la toma de decisiones gerenciales al visibilizar los márgenes netos reales y aislar las ineficiencias de costos del mes, transformando la incertidumbre de los datos transaccionales en palancas estratégicas de crecimiento financiero.

@@ -5,7 +5,7 @@ La gerencia comercial de AdventureWorks opera bajo un baseline financiero global
 
 ---
 
-#### 🛠️ Enfoque Técnico: Arquitectura e Integración
+#### 🛠️ Enfoque Técnico y Modelado
 Se desarrolló un pipeline local migrado a un entorno portátil que centraliza la información de forma eficiente. Mediante el uso de Python (Host) y SQL, se procesaron las transacciones directamente en el motor de la base de datos para garantizar la integridad y velocidad del flujo:
 - **Consultas Avanzadas de Integración Dimensional:** Uso de CTEs y uniones relacionales optimizadas para consolidar las tablas de hechos de ventas con los catálogos de productos, territorios y clientes en un único entorno portátil.
 - **Extracción de KPIs Medainte Funciones de Agregación :** Modelado matemático y financiero de márgenes netos reales, costos logísticos prorrateados y líneas de base globales ejecutados directamente en el servidor para evitar la sobrecarga de memoria.

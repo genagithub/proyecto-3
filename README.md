@@ -25,4 +25,4 @@ El resultado es una herramienta interactiva que traduce la lógica en visualizac
 ---
 
 #### 📌 Propósito: Impacto Operativo
-**Eficiencia, Transparencia y Rentabilidad:** Optimiza la toma de decisiones gerenciales al visibilizar los márgenes netos reales y aislar las ineficiencias de costos del mes, transformando la incertidumbre de los datos transaccionales en palancas estratégicas de crecimiento financiero.
+**Eficiencia, Transparencia y Rentabilidad:** Su integración operativa permite a la gerencia auditar de forma instantánea y antes del cierre de cada ciclo la rentabilidad por categoría, aislar ineficiencias omnicanal y trazar el comportamiento de clientes VIP de alto valor. Al visibilizar los márgenes netos reales de cada dimensión, la herramienta actúa como un soporte estratégico continuo que elimina la incertidumbre de los datos transaccionales y acelera la toma de decisiones financieras sin requerir desarrollos de infraestructura complejos.
